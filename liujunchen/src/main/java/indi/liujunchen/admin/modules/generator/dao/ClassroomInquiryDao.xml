@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.liujunchen.admin.modules.generator.dao.ClassroomInquiryDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity" id="classroomInquiryMap">
+        <result property="id" column="id"/>
+        <result property="classroomNum" column="classroom_num"/>
+        <result property="classroomType" column="classroom_type"/>
+        <result property="isAppointment" column="is_appointment"/>
+        <result property="shijianStart" column="shijianStart"/>
+        <result property="shijianEnd" column="shijianEnd"/>
+        <result property="approveStatus" column="approveStatus"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		select * from classroom_inquiry where id = #{value}
+	</select>
+<select id="querySelf" resultType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		select * from classroom_inquiry where createBy = #{value}  order by id desc
+	</select>
+	<select id="queryList" resultType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		select * from classroom_inquiry where approveStatus in ('审核中','同意','拒绝')
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from classroom_inquiry where approveStatus in ('审核中','同意','拒绝')
+	</select>
+	
+	 	 <select id="queryTotalSelf" resultType="int">
+		select count(*) from classroom_inquiry where  createBy = #{value}
+	</select>
+	<insert id="save" parameterType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		insert into classroom_inquiry
+		(
+			`id`, 
+			`classroom_num`, 
+			`classroom_type`, 
+			`is_appointment`, 
+			`shijianStart`, 
+			`shijianEnd`, 
+			`approveStatus`,
+			`createBy`
+			
+		)
+		values
+		(
+			#{id}, 
+			#{classroomNum}, 
+			#{classroomType}, 
+			#{isAppointment}, 
+			#{shijianStart}, 
+			#{shijianEnd}, 
+			#{approveStatus},
+			#{createBy}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		update classroom_inquiry 
+		<set>
+			<if test="classroomNum != null">`classroom_num` = #{classroomNum}, </if>
+			<if test="classroomType != null">`classroom_type` = #{classroomType}, </if>
+			<if test="isAppointment != null">`is_appointment` = #{isAppointment}, </if>
+			<if test="shijianStart != null">`shijianStart` = #{shijianStart}, </if>
+			<if test="shijianEnd != null">`shijianEnd` = #{shijianEnd}, </if>
+			<if test="approveStatus != null">`approveStatus` = #{approveStatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+		<update id="appointment" parameterType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		update classroom_inquiry 
+		<set>
+		
+			<if test="approveStatus == '已保存'">`approveStatus` = '审核中'</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<update id="agree" parameterType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		update classroom_inquiry 
+		<set>
+			<if test="isAppointment != null">`is_appointment` = '是', </if>
+			<if test="approveStatus == '已保存'">`approveStatus` = '同意'</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<update id="refuse" parameterType="indi.liujunchen.admin.modules.generator.entity.ClassroomInquiryEntity">
+		update classroom_inquiry 
+		<set>
+		<if test="isAppointment != null">`is_appointment` = '否', </if>
+			<if test="approveStatus == '已保存'">`approveStatus` = '拒绝'</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<delete id="delete">
+		delete from classroom_inquiry where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from classroom_inquiry where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

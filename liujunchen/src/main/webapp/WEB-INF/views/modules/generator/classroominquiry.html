@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>教室查询</title>
+<#include "/header.html">
+<script src="${request.contextPath}/statics/js/modules/generator/laydate.js"></script>
+ <script>
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test5'
+      ,type: 'datetime'
+    });
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test6'
+      ,type: 'datetime'
+    });
+    
+    
+ </script>
+  <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/laydate.css">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+		
+		<!-- 	<div class="form-group col-sm-2">
+				<input type="text" class="form-control"  placeholder="教室号">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a> -->
+				<#if shiro.hasPermission("classroominquiry:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增预约</a>
+			</#if>
+			<#if shiro.hasPermission("classroominquiry:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("classroominquiry:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+			
+			
+			
+			
+			<#if shiro.hasPermission("classroominquiry:appointment")> 
+            <a class="btn btn-primary" @click="appointment"><i class="fa fa-pencil-square-o"></i>&nbsp;提交审核</a>
+			 </#if> 
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">教室号</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.classroomNum" placeholder="教室号"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">教室类型</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.classroomType" placeholder="教室类型"/>
+			    </div>
+			</div>
+					<!-- 				<div class="form-group">
+			   	<div class="col-sm-2 control-label">是否预约</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.isAppointment" placeholder="是否预约" readonly="true"/>
+			    </div>
+			</div> -->
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">开始时间</div>
+			   	<div class="col-sm-10">
+			     <!--   <input type="date" class="form-control" v-model="classroomInquiry.shijianStart" format="yyyy-MM-dd hh:mm:ss" placeholder="开始时间"/>  -->
+			    
+			   	<input type="text" class="form-control" placeholder="时间选择器" id="test5" v-model="classroomInquiry.shijianStart">
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">结束时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.shijianEnd" id="test6" placeholder="结束时间"/>
+			  	
+			    </div>
+			</div>
+			
+	<!-- 		<div class="form-group">
+			   	<div class="col-sm-2 control-label">创建人</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="leavingMessage.createBy" placeholder="创建人" />
+			    </div>
+			</div> -->
+				<!-- 					<div class="form-group">
+			   	<div class="col-sm-2 control-label">审核状态</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.approveStatus" placeholder="审核状态" readonly="true"/>
+			    </div>
+			</div> -->
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/generator/classroominquiry.js?_${.now?long}"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>教室查询</title>
+<#include "/header.html">
+<script src="${request.contextPath}/statics/js/modules/generator/laydate.js"></script>
+ <script>
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test5'
+      ,type: 'datetime'
+    });
+ </script>
+  <style>
+  .demo-input{padding-left: 10px; height: 38px; min-width: 262px; line-height: 38px; border: 1px solid #e6e6e6;  background-color: #fff;  border-radius: 2px;}
+  </style>
+  
+  <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/laydate.css">
+</head>
+<body>
+
+<input type="text" class="form-control layer-date" placeholder="时间选择器" id="test5">
+
+
+</body>
+</html>

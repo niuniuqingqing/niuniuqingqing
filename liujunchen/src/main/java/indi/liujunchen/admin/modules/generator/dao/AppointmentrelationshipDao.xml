@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.liujunchen.admin.modules.generator.dao.AppointmentrelationshipDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="indi.liujunchen.admin.modules.generator.entity.AppointmentrelationshipEntity" id="appointmentrelationshipMap">
+        <result property="id" column="id"/>
+        <result property="appointment" column="appointment"/>
+        <result property="projectmanagement" column="projectmanagement"/>
+        <result property="departmentmanagement" column="departmentManagement"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="indi.liujunchen.admin.modules.generator.entity.AppointmentrelationshipEntity">
+		select * from appointmentrelationship where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="indi.liujunchen.admin.modules.generator.entity.AppointmentrelationshipEntity">
+		select * from appointmentrelationship
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from appointmentrelationship 
+	</select>
+	 
+	<insert id="save" parameterType="indi.liujunchen.admin.modules.generator.entity.AppointmentrelationshipEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into appointmentrelationship
+		(
+			`appointment`, 
+			`projectmanagement`, 
+			`departmentManagement`
+		)
+		values
+		(
+			#{appointment}, 
+			#{projectmanagement}, 
+			#{departmentmanagement}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="indi.liujunchen.admin.modules.generator.entity.AppointmentrelationshipEntity">
+		update appointmentrelationship 
+		<set>
+			<if test="appointment != null">`appointment` = #{appointment}, </if>
+			<if test="projectmanagement != null">`projectmanagement` = #{projectmanagement}, </if>
+			<if test="departmentmanagement != null">`departmentManagement` = #{departmentmanagement}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from appointmentrelationship where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from appointmentrelationship where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

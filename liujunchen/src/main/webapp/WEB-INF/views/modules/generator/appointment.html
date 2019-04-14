@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>预约</title>
+<#include "/header.html">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<#if shiro.hasPermission("appointment:save")>
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("appointment:update")>
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("appointment:delete")>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">预约时间</div>
+			   	<div class="col-sm-10">
+			      <input type="date" class="form-control" v-model="appointment.shijian" placeholder="预约时间"/>
+			    </div>
+			</div>
+	
+	
+		<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+					 	<div class="col-sm-10">
+					 	 <a class="btn btn-primary" onClick="addRowData()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+					 	  <a class="btn btn-primary" onClick="delRow()"><i class="fa fa-plus"></i>&nbsp;删除</a>
+		  <table id="jqGridOW"></table>
+		  <div id="jqGridPagerOW"></div>
+		  </div>
+			</div>
+		
+
+			
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+			
+		</form>
+		
+	</div>
+	
+
+	
+	
+	
+	
+</div>
+<!-- 选择项目 -->
+<div id="deptLayer" style="display: none;padding:10px;">
+	<ul id="deptTree" class="ztree1"></ul>
+</div>
+
+<!-- 选择科室 -->
+<div id="deptmentManagementLayer" style="display: none;padding:10px;">
+	<ul id="deptmentManagementTree" class="ztree2"></ul>
+</div>
+
+
+
+<!-- 选择医务人员 -->
+<div id="doctorLayer" style="display: none;padding:10px;">
+	<ul id="doctorTree" class="ztree3"></ul>
+</div>
+
+
+<script src="${request.contextPath}/statics/js/modules/generator/appointment.js?_${.now?long}"></script>
+</body>
+</html>

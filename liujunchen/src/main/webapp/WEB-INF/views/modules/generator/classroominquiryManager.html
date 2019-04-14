@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>教室查询</title>
+<#include "/header.html">
+<script src="${request.contextPath}/statics/js/modules/generator/laydate.js"></script>
+ <script>
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test5'
+      ,type: 'datetime'
+    });
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test6'
+      ,type: 'datetime'
+    });
+    
+    
+ </script>
+  <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/laydate.css">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+		
+			<!-- <div class="form-group col-sm-2">
+				<input type="text" class="form-control"  placeholder="教室号">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a> -->
+						 <#if shiro.hasPermission("classroominquiry:agree")>
+            <a class="btn btn-primary" @click="agree"><i class="fa fa-trash-o"></i>&nbsp;同意</a>
+			</#if> 
+			 <#if shiro.hasPermission("classroominquiry:refuse")>
+            <a class="btn btn-primary" @click="refuse"><i class="fa fa-trash-o"></i>&nbsp;拒绝</a>
+			</#if> 
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">教室号</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.classroomNum" placeholder="教室号"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">教室类型</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.classroomType" placeholder="教室类型"/>
+			    </div>
+			</div>
+					<!-- 				<div class="form-group">
+			   	<div class="col-sm-2 control-label">是否预约</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.isAppointment" placeholder="是否预约" readonly="true"/>
+			    </div>
+			</div> -->
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">开始时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.shijianStart" placeholder="开始时间" id="test5"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">结束时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.shijianEnd" placeholder="结束时间" id="test5"/>
+			  	<fmt:formatDate  type="both"/>
+			    </div>
+			</div>
+				<!-- 					<div class="form-group">
+			   	<div class="col-sm-2 control-label">审核状态</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="classroomInquiry.approveStatus" placeholder="审核状态" readonly="true"/>
+			    </div>
+			</div> -->
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/generator/classroominquiryManager.js?_${.now?long}"></script>
+</body>
+</html>

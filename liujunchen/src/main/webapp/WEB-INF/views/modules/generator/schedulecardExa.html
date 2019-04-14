@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>课程查询</title>
+<#include "/header.html">
+<script src="${request.contextPath}/statics/js/modules/generator/laydate.js"></script>
+ <script>
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test5'
+      ,type: 'datetime'
+    });
+    
+    //时间选择器
+    laydate.render({
+      elem: '#test6'
+      ,type: 'datetime'
+    });
+    
+    
+ </script>
+  <link rel="stylesheet" type="text/css" href="${request.contextPath}/statics/css/laydate.css">
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<!-- <div class="form-group col-sm-2">
+				<input type="text" class="form-control"  placeholder="教室号">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a> -->
+
+		<!-- 	<#if shiro.hasPermission("schedulecard:lecture")>
+            <a class="btn btn-primary" @click="lecture"><i class="fa fa-trash-o"></i>&nbsp;调课申请</a>
+			</#if> -->
+				<#if shiro.hasPermission("schedulecard:examination")>
+            <a class="btn btn-primary" @click="examination"><i class=fa-pencil-square-o></i>&nbsp;预约考试</a>
+			</#if> 
+			
+			<#if shiro.hasPermission("schedulecard:submit")>
+            <a class="btn btn-primary" @click="submit"><i class="fa fa-pencil-square-o"></i>&nbsp;提交</a>
+			</#if>
+			 
+			
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+												<div class="form-group">
+			   	<div class="col-sm-2 control-label">开始时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="scheduleCard.shijianStart" placeholder="开始时间" id="test5"/>
+			   	
+			   	 </div>
+			</div>
+												<div class="form-group">
+			   	<div class="col-sm-2 control-label">结束时间</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="scheduleCard.shijianEnd" placeholder="结束时间" id="test6"/>
+			   	
+			   	 </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">教室</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="scheduleCard.classroom" placeholder="教室"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">预约人</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="scheduleCard.teacher" placeholder="教师"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">科目</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="scheduleCard.subject" placeholder="科目"/>
+			    </div>
+			</div>
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/generator/schedulecardExa.js?_${.now?long}"></script>
+</body>
+</html>

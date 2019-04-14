@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.liujunchen.admin.modules.generator.dao.EquipmentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity" id="equipmentMap">
+        <result property="id" column="id"/>
+        <result property="equipmentName" column="equipment_name"/>
+        <result property="equipmentAddress" column="equipment_address"/>
+        <result property="problem" column="problem"/>
+        <result property="createBy" column="createBy"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		select * from equipment where id = #{value}
+	</select>
+
+<select id="querySelf" resultType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		select * from equipment where createBy = #{value}  order by id desc
+	</select>
+
+	<select id="queryList" resultType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		select * from equipment
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	 <select id="queryTotalSelf" resultType="int">
+		select count(*) from equipment where  createBy = #{value}
+	</select>
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from equipment 
+	</select>
+	 
+	<insert id="save" parameterType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into equipment
+		(
+			`equipment_name`, 
+			`equipment_address`, 
+			`problem`, 
+			`createBy`
+		)
+		values
+		(
+			#{equipmentName}, 
+			#{equipmentAddress}, 
+			#{problem}, 
+			#{createBy}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		update equipment 
+		<set>
+			<if test="equipmentName != null">`equipment_name` = #{equipmentName}, </if>
+			<if test="equipmentAddress != null">`equipment_address` = #{equipmentAddress}, </if>
+			<if test="problem != null">`problem` = #{problem}, </if>
+			<if test="createBy != null">`createBy` = #{createBy}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<update id="repair" parameterType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		update equipment set problem='报修'
+	
+		where id = #{id}
+	</update>
+	
+	
+	<update id="normaluse" parameterType="indi.liujunchen.admin.modules.generator.entity.EquipmentEntity">
+		update equipment set problem='正常使用'
+		where id = #{id}
+	</update>
+	
+	
+	<delete id="delete">
+		delete from equipment where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from equipment where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

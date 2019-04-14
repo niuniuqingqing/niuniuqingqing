@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.liujunchen.admin.modules.generator.dao.ScheduleCardDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity" id="scheduleCardMap">
+        <result property="id" column="id"/>
+        <result property="shijian" column="shijian"/>
+         <result property="shijianStart" column="shijianStart"/>
+          <result property="shijianEnd" column="shijianEnd"/>
+        <result property="classroom" column="classroom"/>
+        <result property="teacher" column="teacher"/>
+        <result property="subject" column="subject"/>
+          <result property="approveStatus" column="approveStatus"/>
+           <result property="category" column="category"/>
+          
+    </resultMap>
+
+	<select id="queryObject" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where  category="课程表"
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+		<select id="querylectrueList" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where  category="调课申请" and approveStatus in ('审核中','同意','拒绝') order by id desc
+
+	</select>
+	
+	
+	<select id="querySelf" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where teacher = #{value} and category="课程表" order by id desc
+	</select>
+	
+	
+	<select id="queryselfLectrue" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where teacher = #{value} and category="调课申请" order by id desc
+	</select>
+	
+	
+	<select id="querySelfExa" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where teacher = #{value}  and category="考试预约" order by id desc
+	</select>
+	
+	<select id="querySelfExaSubmit" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where teacher = #{value}  and category="考试预约" and approveStatus in ('审核中','同意','拒绝') order by id desc
+	</select>
+	
+	<select id="querySelfLecture" resultType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		select * from schedule_card where teacher = #{value} and category="调课申请" order by id desc
+	</select>
+	
+
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from schedule_card 
+	</select>
+	 	<select id="queryTotallectrueList" resultType="int">
+		select count(*) from schedule_card where  category="调课申请" and approveStatus in ('审核中','同意','拒绝')
+	</select>
+	
+	 <select id="queryTotalSelf" resultType="int">
+		select count(*) from schedule_card where teacher = #{value}
+	</select>
+	
+	 <select id="queryTotalSelfExa" resultType="int">
+		select count(*) from schedule_card where teacher = #{value} and category="考试预约"
+	</select>
+	
+	<select id="queryTotalselfLectrue" resultType="int">
+		select count(*) from schedule_card where teacher = #{value} and category="调课申请"
+	</select>
+	
+	<select id="queryTotalSelfExaSubmit" resultType="int">
+		select count(*) from schedule_card where teacher = #{value} and category="考试预约" and approveStatus in ('审核中','同意','拒绝')
+	</select>
+	
+	
+	<insert id="save" parameterType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		insert into schedule_card
+		(
+			`id`, 
+			`shijianStart`, 
+			`shijianEnd`, 
+			`classroom`, 
+			`teacher`, 
+			`subject`,
+			`approveStatus`,
+			`category`
+			
+		)
+		values
+		(
+			#{id}, 
+			#{shijianStart}, 
+			#{shijianEnd}, 
+			#{classroom}, 
+			#{teacher}, 
+			#{subject},
+			#{approveStatus},
+			#{category}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		update schedule_card 
+		<set>
+			<if test="shijianStart != null">`shijianStart` = #{shijianStart}, </if>
+				<if test="shijianEnd != null">`shijianEnd` = #{shijianEnd}, </if>
+			<if test="classroom != null">`classroom` = #{classroom}, </if>
+			<if test="teacher != null">`teacher` = #{teacher}, </if>
+			<if test="subject != null">`subject` = #{subject}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="submit" parameterType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+			update schedule_card 
+		<set>
+			<if test="approveStatus == '未提交'">`approveStatus` = '审核中'</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="agree" parameterType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		update schedule_card  set approveStatus = '同意'
+
+		where id = #{id}
+	</update>
+	
+	<update id="refuse" parameterType="indi.liujunchen.admin.modules.generator.entity.ScheduleCardEntity">
+		update schedule_card  set approveStatus = '拒绝'
+
+		where id = #{id}
+	</update>
+	
+	
+	<delete id="delete">
+		delete from schedule_card where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from schedule_card where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
