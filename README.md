@@ -1,11 +1,15 @@
-# niuniuqingqing
-admin,后台框架
+niuniuqingqing
 
+admin
 
-项目说明
+**项目说明** 
+
 liujunchenSpringBoot版，方便SpringBoot开发者使用，该版本要求JDK1.8
 
-项目结构
+<br> 
+
+**项目结构** 
+```
 liujunchen
 ├─doc  项目SQL语句
 ├─common  公共
@@ -35,23 +39,32 @@ liujunchen
 │     
 │
 
+```
 
-本地部署
-通过git下载源码
-创建数据库niuniu，数据库编码为UTF-8
-执行doc/db.sql文件，初始化数据【按需导入表结构及数据】
-修改application-dev.yml，更新MySQL账号和密码
-Eclipse、IDEA运行NiuniuApplication.java，则可启动项目
-项目访问路径：http://localhost:8080/liujunchen
-账号密码：admin/admin
-swagger文档路径：http://localhost:8080/liujunchen/swagger/index.html
+<br>
 
-分布式部署
-分布式部署，需要安装redis，并配置application.yml里的redis信息
-需要配置【liujunchen.redis.open=true】，表示开启redis缓存
-需要配置【liujunchen.shiro.redis=true】，表示把shiro session存到redis里
+ **本地部署**
+- 通过git下载源码
+- 创建数据库niuniu，数据库编码为UTF-8
+- 执行doc/db.sql文件，初始化数据【按需导入表结构及数据】
+- 修改application-dev.yml，更新MySQL账号和密码
+- Eclipse、IDEA运行NiuniuApplication.java，则可启动项目
+- 项目访问路径：http://localhost:8080/liujunchen
+- 账号密码：admin/admin
+- swagger文档路径：http://localhost:8080/liujunchen/swagger/index.html
 
-项目演示
-演示地址：
-账号密码：admin/admin
+<br>
+
+ **分布式部署**
+- 分布式部署，需要安装redis，并配置application.yml里的redis信息
+- 需要配置【liujunchen.redis.open=true】，表示开启redis缓存
+- 需要配置【liujunchen.shiro.redis=true】，表示把shiro session存到redis里
+
+<br>
+
+ **项目演示**
+- 演示地址：
+- 账号密码：admin/admin
+
+<br>
 
