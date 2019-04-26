@@ -1,10 +1,9 @@
-niuniuqingqing
-
+NiuniuQingQing
 admin
 
 **项目说明** 
 
-liujunchenSpringBoot版，方便SpringBoot开发者使用，该版本要求JDK1.8
+liujunchen SpringBoot版，方便SpringBoot开发者使用，该版本要求JDK1.8
 
 <br> 
 
